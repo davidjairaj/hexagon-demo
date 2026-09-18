@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; frame-src 'self' blob:; img-src data: blob:; form-action 'none'; base-uri 'none'; object-src 'none'"
+    />
+    <title>Private demonstration</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      body {
+        margin: 0;
+        background: #102d3e;
+        color: #eaf2f5;
+        font-family:
+          ui-sans-serif,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        min-height: 100vh;
+      }
+      main {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 1.05fr 1fr;
+        max-width: 1200px;
+        margin: auto;
+        align-items: center;
+        padding: 60px;
+        gap: 100px;
+      }
+      .intro {
+        border-top: 2px solid #53aaa9;
+        padding-top: 28px;
+      }
+      .eyebrow {
+        font-size: 12px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #81c9c6;
+        margin-bottom: 30px;
+      }
+      h1 {
+        font-size: clamp(38px, 5vw, 60px);
+        font-weight: 450;
+        line-height: 1.08;
+        letter-spacing: -0.045em;
+        margin: 0 0 24px;
+      }
+      p {
+        color: #b9cdd7;
+        font-size: 16px;
+        line-height: 1.65;
+      }
+      form {
+        padding: 34px;
+        background: #fff;
+        color: #163444;
+        border-top: 4px solid #148087;
+      }
+      h2 {
+        font-size: 22px;
+        font-weight: 600;
+        margin: 0 0 10px;
+      }
+      form p {
+        color: #627783;
+        font-size: 14px;
+        margin: 0 0 28px;
+      }
+      label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        margin: 20px 0 8px;
+      }
+      input {
+        width: 100%;
+        padding: 13px;
+        border: 1px solid #a8bbc6;
+        border-radius: 2px;
+        font: inherit;
+      }
+      button {
+        width: 100%;
+        padding: 14px;
+        margin-top: 26px;
+        background: #006d72;
+        color: #fff;
+        border: 0;
+        border-radius: 2px;
+        font:
+          600 15px ui-sans-serif,
+          sans-serif;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.6;
+        cursor: wait;
+      }
+      button:focus-visible,
+      input:focus-visible {
+        outline: 3px solid #ca9137;
+        outline-offset: 3px;
+      }
+      .error {
+        color: #a13532;
+        font-size: 14px;
+        line-height: 1.5;
+        min-height: 24px;
+        margin: 16px 0 0;
+      }
+      .foot {
+        font-size: 12px;
+        color: #69808c;
+        margin: 18px 0 0;
+      }
+      iframe {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        background: #f3f5f6;
+      }
+      noscript {
+        padding: 24px;
+        display: block;
+      }
+      @media (max-width: 750px) {
+        main {
+          display: block;
+          padding: 32px 22px;
+        }
+        .intro {
+          margin: 20px 0 35px;
+        }
+        .eyebrow {
+          margin-bottom: 22px;
+        }
+        h1 {
+          font-size: 40px;
+        }
+        form {
+          padding: 26px;
+        }
+        .intro p {
+          max-width: 380px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main id="gate">
+      <section class="intro">
+        <div class="eyebrow">Private demonstration</div>
+        <h1>From measurement<br />to a defensible<br />decision.</h1>
+        <p>A working demonstration of evidence-led industrial workflows.</p>
+      </section>
+      <form id="unlock">
+        <h2>Enter the demonstration</h2>
+        <p>Use the credentials provided by your host.</p>
+        <label for="username">Email</label
+        ><input
+          id="username"
+          name="username"
+          type="email"
+          autocomplete="username"
+          required
+          spellcheck="false"
+          autocapitalize="none"
+        /><label for="password">Password</label
+        ><input
+          id="password"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          required
+        /><button id="submit" type="submit">Unlock demonstration</button>
+        <div id="error" class="error" role="alert" aria-live="polite"></div>
+        <p class="foot">
+          The application decrypts in this browser. Credentials are not sent to
+          a server. Locking or reloading ends the session.
+        </p>
+      </form>
+    </main>
+    <noscript
+      >JavaScript and a current browser are required to decrypt this
+      demonstration.</noscript
+    >
+    <script>
+      const form = document.getElementById("unlock"),
+        error = document.getElementById("error"),
+        button = document.getElementById("submit");
+      let appFrame;
+      function lock() {
+        if (appFrame) {
+          appFrame.remove();
+          appFrame = null;
+        }
+        document.getElementById("gate").hidden = false;
+        form.reset();
+        button.disabled = false;
+        button.textContent = "Unlock demonstration";
+        error.textContent = "";
+        document.getElementById("username").focus();
+      }
+      window.addEventListener("message", (event) => {
+        if (
+          appFrame &&
+          event.source === appFrame.contentWindow &&
+          event.data?.type === "lock-demo"
+        )
+          lock();
+      });
+      window.addEventListener("pagehide", lock);
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        error.textContent = "";
+        button.disabled = true;
+        button.textContent = "Decrypting…";
+        try {
+          if (!crypto.subtle)
+            throw new Error("A current browser over HTTPS is required.");
+          const response = await fetch("./payload.json", { cache: "no-store" });
+          if (!response.ok)
+            throw new Error(
+              "The application could not be downloaded. Please retry.",
+            );
+          const envelope = await response.json();
+          if (envelope.version !== 1 || envelope.iterations !== 600000)
+            throw new Error("Unsupported application format.");
+          const decode = (s) =>
+            Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+          const username = document
+              .getElementById("username")
+              .value.trim()
+              .toLowerCase(),
+            password = document.getElementById("password").value;
+          const material = await crypto.subtle.importKey(
+            "raw",
+            new TextEncoder().encode(username + "\0" + password),
+            "PBKDF2",
+            false,
+            ["deriveKey"],
+          );
+          const key = await crypto.subtle.deriveKey(
+            {
+              name: "PBKDF2",
+              salt: decode(envelope.salt),
+              iterations: envelope.iterations,
+              hash: "SHA-256",
+            },
+            material,
+            { name: "AES-GCM", length: 256 },
+            false,
+            ["decrypt"],
+          );
+          let html;
+          try {
+            html = new TextDecoder("utf-8", { fatal: true }).decode(
+              await crypto.subtle.decrypt(
+                {
+                  name: "AES-GCM",
+                  iv: decode(envelope.iv),
+                  additionalData: new TextEncoder().encode("private-demo/v1"),
+                  tagLength: 128,
+                },
+                key,
+                decode(envelope.ciphertext),
+              ),
+            );
+          } catch {
+            throw new Error("Unable to unlock. Check the email and password.");
+          }
+          appFrame = document.createElement("iframe");
+          appFrame.title = "Industrial solutions demonstration";
+          appFrame.setAttribute(
+            "sandbox",
+            "allow-scripts allow-downloads allow-modals allow-popups allow-popups-to-escape-sandbox",
+          );
+          appFrame.srcdoc = html;
+          document.body.appendChild(appFrame);
+          document.getElementById("gate").hidden = true;
+          form.reset();
+        } catch (err) {
+          error.textContent = err.message || "Unable to unlock.";
+        } finally {
+          button.disabled = false;
+          button.textContent = "Unlock demonstration";
+        }
+      });
+    </script>
+  </body>
+</html>
