@@ -104,6 +104,14 @@
           sans-serif;
         cursor: pointer;
       }
+      .show-password {
+        margin-top: 9px;
+        width: auto;
+        padding: 7px 0;
+        background: transparent;
+        color: #006d72;
+        font-size: 13px;
+      }
       button:disabled {
         opacity: 0.6;
         cursor: wait;
@@ -165,7 +173,10 @@
       <section class="intro">
         <div class="eyebrow">Private demonstration</div>
         <h1>From measurement<br />to a defensible<br />decision.</h1>
-        <p>A working demonstration of evidence-led industrial workflows.</p>
+        <p>
+          A guided, hands-on demonstration. Sign in, choose Start guided demo,
+          and follow the steps. No installation or technical setup needed.
+        </p>
       </section>
       <form id="unlock">
         <h2>Enter the demonstration</h2>
@@ -186,7 +197,14 @@
           type="password"
           autocomplete="current-password"
           required
-        /><button id="submit" type="submit">Unlock demonstration</button>
+        /><button
+          id="show-password"
+          class="show-password"
+          type="button"
+          aria-pressed="false"
+        >
+          Show password</button
+        ><button id="submit" type="submit">Unlock demonstration</button>
         <div id="error" class="error" role="alert" aria-live="polite"></div>
         <p class="foot">
           The application decrypts in this browser. Credentials are not sent to
@@ -202,6 +220,14 @@
       const form = document.getElementById("unlock"),
         error = document.getElementById("error"),
         button = document.getElementById("submit");
+      document.getElementById("show-password").addEventListener("click", () => {
+        const field = document.getElementById("password"),
+          toggle = document.getElementById("show-password"),
+          show = field.type === "password";
+        field.type = show ? "text" : "password";
+        toggle.textContent = show ? "Hide password" : "Show password";
+        toggle.setAttribute("aria-pressed", String(show));
+      });
       let appFrame;
       function lock() {
         if (appFrame) {
@@ -210,6 +236,11 @@
         }
         document.getElementById("gate").hidden = false;
         form.reset();
+        document.getElementById("password").type = "password";
+        document.getElementById("show-password").textContent = "Show password";
+        document
+          .getElementById("show-password")
+          .setAttribute("aria-pressed", "false");
         button.disabled = false;
         button.textContent = "Unlock demonstration";
         error.textContent = "";
@@ -293,6 +324,12 @@
           document.body.appendChild(appFrame);
           document.getElementById("gate").hidden = true;
           form.reset();
+          document.getElementById("password").type = "password";
+          document.getElementById("show-password").textContent =
+            "Show password";
+          document
+            .getElementById("show-password")
+            .setAttribute("aria-pressed", "false");
         } catch (err) {
           error.textContent = err.message || "Unable to unlock.";
         } finally {
